@@ -30,3 +30,4 @@ Regras:
 - Cada issue deve ser desenvolvida em uma branch.
 - O Pull Request deve ser revisado por outro aluno.
 - O código deve passar pelos testes antes do merge.
+- O código deve funcionar
