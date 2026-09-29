@@ -1,6 +1,8 @@
 try:
+    from src.item import Item
     from src.personagem import Personagem
 except ModuleNotFoundError:
+    from item import Item
     from personagem import Personagem
 
 
@@ -11,8 +13,14 @@ class Guerreiro(Personagem):
             nome=nome,
             vida=120,
             ataque=20,
-            defesa=10
+            defesa=10,
+            vida_maxima=120,
         )
+        self.inventario = [
+            Item("Poção de vida", 20, "cura", "Recupera vida"),
+            Item("Bandagem", 15, "cura", "Curativo básico"),
+            Item("Elixir do soldado", 25, "cura", "Poção reforçada")
+        ]
 
     def atacar(self, alvo):
         mensagens = [

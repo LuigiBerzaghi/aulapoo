@@ -1,33 +1,66 @@
-# ⚔️ Jogo de Batalha
+# ⚔️ Jogo de Batalha RPG
 
 Projeto desenvolvido na disciplina de Programação Orientada a Objetos.
 
-## Executando o projeto
+## Visão geral
 
-Na raiz do projeto:
+Este jogo simula um combate por turnos em que o jogador escolhe um herói, enfrenta inimigos e usa itens para sobreviver. O projeto foi expandido para incluir:
 
-Fluxo de desenvolvimento:
+- Poção de vida
+- Uso de itens em combate
+- Turno do inimigo após cada ação do jogador
+- Condição de vitória/derrota
+- Classe Arqueiro
+- Novo tipo de inimigo: Esqueleto
+- Chefe final
+- Testes automatizados para personagens e batalha
 
-Cada funcionalidade deve ser desenvolvida em uma branch própria.
+## Como executar
 
-Exemplo:
-
-feature/ataque-guerreiro
-
-Depois:
+Na raiz do projeto, use:
 
 ```bash
-git add .
-git commit -m "feat: implementa ataque do guerreiro"
-git push
+python src/main.py
 ```
 
-Após o push, abra um Pull Request no GitHub.
+Você também pode iniciar com um personagem específico:
 
-Regras:
-- Não desenvolver diretamente na branch main.
-- Cada funcionalidade deve possuir uma issue.
-- Cada issue deve ser desenvolvida em uma branch.
-- O Pull Request deve ser revisado por outro aluno.
-- O código deve passar pelos testes antes do merge.
-- O código deve funcionar
+```bash
+python src/main.py guerreiro
+python src/main.py mago
+python src/main.py arqueiro
+```
+
+## Estrutura do projeto
+
+```text
+src/
+  arqueiro.py
+  batalha.py
+  chefe_final.py
+  esqueleto.py
+  guerreiro.py
+  inimigo.py
+  item.py
+  mago.py
+  main.py
+  personagem.py
+
+tests/
+  test_batalha.py
+  test_personagem.py
+```
+
+## Regras de desenvolvimento
+
+- Cada funcionalidade deve ser implementada em uma branch separada.
+- Testes devem ser executados antes de enviar alterações.
+- O código deve continuar compatível com a execução em linha de comando.
+
+## Validação
+
+Para rodar a suíte de testes:
+
+```bash
+python -m pytest -q
+```
