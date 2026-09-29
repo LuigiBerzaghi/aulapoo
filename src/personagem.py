@@ -13,8 +13,11 @@ class Personagem(ABC):
         return self.vida > 0
 
     def receber_dano(self, dano):
-        # TODO: calcular o dano considerando a defesa
-        pass
+        if dano <= 0:
+            return
+
+        dano_real = max(dano - self.defesa, 0)
+        self.vida = max(0, self.vida - dano_real)
 
     @abstractmethod
     def atacar(self, alvo):

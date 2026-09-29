@@ -5,5 +5,5 @@ class Item:
         self.valor = valor
 
     def usar(self, personagem):
-        # TODO: implementar efeito do item
-        pass
+        personagem.vida += self.valor
+        print(f"{personagem.nome} recuperou {self.valor} de vida.")
