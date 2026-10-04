@@ -37,6 +37,5 @@ class Arqueiro(Personagem):
             f"{self.nome} acerta um tiro preciso em {alvo.nome}!",
             f"{self.nome} mira e atira em {alvo.nome}!"
         ]
-        print(mensagens[0])
+        print(random.choice(mensagens))
         alvo.receber_dano(dano)
-        print(f"Dano: {dano}")

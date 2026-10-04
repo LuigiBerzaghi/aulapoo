@@ -10,6 +10,16 @@ except ModuleNotFoundError:
     from arqueiro import Arqueiro
 
 
+def mostrar_titulo(titulo):
+    print("\n" + "=" * 40)
+    print(titulo.center(40))
+    print("=" * 40)
+
+
+def pausar():
+    input("\nPressione Enter para continuar...")
+
+
 class Batalha:
 
     def __init__(self, jogador, inimigo):
@@ -34,7 +44,7 @@ class Batalha:
         return True
 
     def escolher_personagem(self):
-        print("\nTroca de personagem:")
+        mostrar_titulo("TROCA DE PERSONAGEM")
         print("1 - Guerreiro")
         print("2 - Mago")
         print("3 - Arqueiro")
@@ -56,9 +66,9 @@ class Batalha:
             print("Seu inventário está vazio.")
             return None
 
-        print("\n--- ITENS DISPONÍVEIS ---")
+        mostrar_titulo("BOLSA DE ITENS")
         for indice, item in enumerate(itens, start=1):
-            print(f"{indice} - {item.nome} ({item.tipo})")
+            print(f"{indice} - {item.nome} ({item.tipo}): {item.descricao}")
 
         escolha = input("Escolha um item: ").strip()
         if not escolha.isdigit():
@@ -100,7 +110,9 @@ class Batalha:
         if not self.jogador.esta_vivo() or not self.inimigo.esta_vivo():
             return False
 
+        print(f"\n--- Turno de {self.inimigo.nome} ---")
         if hasattr(self.inimigo, "ataque_especial") and self.inimigo.vida <= self.inimigo.vida_maxima * 0.3:
+            print(f"{self.inimigo.nome} está gravemente ferido e ataca com fúria!")
             self.inimigo.ataque_especial(self.jogador)
         else:
             self.inimigo.atacar(self.jogador)
@@ -133,14 +145,25 @@ class Batalha:
         return self.turno_inimigo()
 
     def iniciar(self):
-        print("=" * 40)
-        print("        INÍCIO DA BATALHA")
-        print("=" * 40)
+        mostrar_titulo("INÍCIO DA BATALHA")
+        print(self.inimigo.local)
+        print(f'\n{self.inimigo.nome}: "{self.inimigo.fala}"')
+        pausar()
 
+        rodada = 1
         while self.jogador.esta_vivo() and self.inimigo.esta_vivo():
-            print("\n--- STATUS ---")
+            mostrar_titulo(f"RODADA {rodada}")
             self.jogador.mostrar_status()
             self.inimigo.mostrar_status()
+
+            if self.jogador.inventario:
+                print(f"Inventário: {', '.join(item.nome for item in self.jogador.inventario)}")
+
+            if hasattr(self.jogador, "flechas"):
+                print(f"Flechas: {self.jogador.flechas}")
+
+            if hasattr(self.jogador, "dano_bonus_rodada") and self.jogador.dano_bonus_rodada > 1.0:
+                print(f"Bônus de dano ativo: {self.jogador.dano_bonus_rodada}x")
 
             print("\n--- AÇÕES ---")
             print("0 - Trocar de personagem")
@@ -154,21 +177,13 @@ class Batalha:
                 print("2 - Usar item")
                 print("3 - Fugir")
 
-            if self.jogador.inventario:
-                print(f"Inventário: {', '.join(item.nome for item in self.jogador.inventario)}")
-
-            if hasattr(self.jogador, "mana"):
-                print(f"Mana: {self.jogador.mana}/{self.jogador.mana_maxima}")
-
-            if hasattr(self.jogador, "dano_bonus_rodada") and self.jogador.dano_bonus_rodada > 1.0:
-                print(f"Bônus de dano ativo: {self.jogador.dano_bonus_rodada}x")
-
             opcao = input("Escolha uma opção: ").strip()
 
             if opcao == "0":
                 novo_personagem = self.escolher_personagem()
                 if novo_personagem is not None:
                     self.trocar_personagem(novo_personagem)
+                    pausar()
                 continue
 
             if opcao == "1":
@@ -180,21 +195,23 @@ class Batalha:
                 self.executar_turno_jogador("magia")
 
             elif opcao == "2":
-                print(f"\n{self.jogador.nome} usa uma poção de cura.")
+                print(f"\n{self.jogador.nome} abre a bolsa de itens...")
                 self.executar_turno_jogador("item")
 
             elif opcao == "3" and hasattr(self.jogador, "usar_magia"):
-                print(f"\n{self.jogador.nome} bebe uma poção e se fortalece.")
+                print(f"\n{self.jogador.nome} abre a bolsa de itens...")
                 self.executar_turno_jogador("item")
 
             elif opcao == "3":
-                print(f"{self.jogador.nome} tenta escapar da batalha!")
-                print("Você fugiu da batalha!")
+                print(f"\n{self.jogador.nome} tenta escapar da batalha e some entre as sombras!")
+                mostrar_titulo("FUGA")
+                print("Você fugiu da batalha! Viva para lutar outro dia.")
                 return
 
             elif opcao == "4" and hasattr(self.jogador, "usar_magia"):
-                print(f"{self.jogador.nome} decidiu fugir da batalha.")
-                print("Você fugiu da batalha!")
+                print(f"\n{self.jogador.nome} decidiu fugir da batalha e desaparece numa nuvem de fumaça!")
+                mostrar_titulo("FUGA")
+                print("Você fugiu da batalha! Viva para lutar outro dia.")
                 return
 
             else:
@@ -203,13 +220,20 @@ class Batalha:
 
             estado = self.condicao_vitoria()
             if estado == "vitoria":
-                print(f"{self.inimigo.nome} cai no chão, derrotado!")
+                print(f"\n{self.inimigo.nome} cai no chão, derrotado!")
+                mostrar_titulo("VITÓRIA!")
+                print(f"{self.jogador.nome} sobrevive ao combate e segue sua jornada como um verdadeiro herói.")
                 print("Você venceu a batalha!")
                 return
             if estado == "derrota":
-                print(f"{self.jogador.nome} sucumbe ao combate.")
+                print(f"\n{self.jogador.nome} sucumbe ao combate.")
+                mostrar_titulo("DERROTA")
+                print(f"A visão de {self.jogador.nome} escurece... {self.inimigo.nome} vence desta vez.")
                 print("Você perdeu a batalha!")
                 return
+
+            rodada += 1
+            pausar()
 
         estado = self.condicao_vitoria()
         if estado == "vitoria":

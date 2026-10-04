@@ -31,7 +31,7 @@ class Mago(Personagem):
     def mostrar_status(self):
         print(
             f"{self.nome} | "
-            f"Vida: {self.vida}/{self.vida_maxima} | "
+            f"Vida: {self.barra_vida()} {self.vida}/{self.vida_maxima} | "
             f"Mana: {self.mana}/{self.mana_maxima} | "
             f"Ataque: {self.ataque} | "
             f"Defesa: {self.defesa}"
@@ -46,7 +46,7 @@ class Mago(Personagem):
             f"{self.nome} perfura o ar com um projétil mágico em direção a {alvo.nome}!",
             f"{self.nome} lança um feixe místico contra {alvo.nome}!"
         ]
-        print(mensagens[2])
+        print(random.choice(mensagens))
         alvo.receber_dano(int(dano_final))
 
     def usar_magia(self, alvo):
@@ -56,7 +56,7 @@ class Mago(Personagem):
                 f"{self.nome} estica a mão, mas não há mana suficiente.",
                 f"{self.nome} sente a magia falhar por falta de energia."
             ]
-            print(mensagens[0])
+            print(random.choice(mensagens))
             return False
 
         chance_falha = random.randint(1, 5)
@@ -82,7 +82,6 @@ class Mago(Personagem):
             f"{self.nome} canaliza uma esfera de energia e a lança em {alvo.nome}!",
             f"{self.nome} invoca uma tempestade arcana e atinge {alvo.nome}!"
         ]
-        print(mensagens[1])
-        print(f"Dano mágico: {dano_magico} (multiplicador ativo: {self.dano_bonus_rodada}x)")
+        print(random.choice(mensagens))
         alvo.receber_dano(dano_magico)
         return True

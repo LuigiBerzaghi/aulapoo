@@ -1,3 +1,5 @@
+import random
+
 try:
     from src.item import Item
     from src.personagem import Personagem
@@ -28,5 +30,5 @@ class Guerreiro(Personagem):
             f"{self.nome} acerta um golpe firme em {alvo.nome}!",
             f"{self.nome} desfere um ataque decidido e atinge {alvo.nome}!"
         ]
-        print(mensagens[0])
+        print(random.choice(mensagens))
         alvo.receber_dano(self.ataque)

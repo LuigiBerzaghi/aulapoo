@@ -3,13 +3,13 @@ import sys
 try:
     from src.guerreiro import Guerreiro
     from src.inimigo import ArqueiroSombrio, ChefeFinal, Esqueleto, Goblin, GuerreiroSombrio, Inimigo, MagoSombrio
-    from src.batalha import Batalha
+    from src.batalha import Batalha, mostrar_titulo
     from src.mago import Mago
     from src.arqueiro import Arqueiro
 except ModuleNotFoundError:
     from guerreiro import Guerreiro
     from inimigo import ArqueiroSombrio, ChefeFinal, Esqueleto, Goblin, GuerreiroSombrio, Inimigo, MagoSombrio
-    from batalha import Batalha
+    from batalha import Batalha, mostrar_titulo
     from mago import Mago
     from arqueiro import Arqueiro
 
@@ -19,11 +19,18 @@ def listar_inimigos_disponiveis(jogador):
     return [classe for classe in classes_vilao if classe.pode_enfrentar(jogador.__class__)]
 
 
+def mostrar_abertura():
+    mostrar_titulo("JOGO DE BATALHA RPG")
+    print("O Reino de Eldoria vive dias sombrios.")
+    print("Criaturas da noite atacam os vilarejos e o Mestre da Noite espera em seu castelo.")
+    print("Um herói precisa se levantar. Será você?")
+
+
 def selecionar_personagem():
-    print("\nEscolha seu personagem:")
-    print("1 - Guerreiro")
-    print("2 - Mago")
-    print("3 - Arqueiro")
+    mostrar_titulo("ESCOLHA SEU HERÓI")
+    print("1 - Guerreiro (Arthur)  | Vida 120 | Ataque 20 | Defesa 10")
+    print("2 - Mago (Merlin)       | Vida 80  | Ataque 30 | Defesa 5  | Usa magia")
+    print("3 - Arqueiro (Legolas)  | Vida 100 | Ataque 18 | Defesa 8  | Usa flechas")
     print("4 - Sair")
 
     opcao = input("Opção: ").strip()
@@ -33,6 +40,7 @@ def selecionar_personagem():
     if opcao == "3":
         return Arqueiro("Legolas")
     if opcao == "4":
+        print("Até a próxima, aventureiro!")
         raise SystemExit
     return Guerreiro("Arthur")
 
@@ -42,9 +50,10 @@ def selecionar_inimigo(jogador):
     if not inimigos:
         return ChefeFinal("Mestre da Noite")
 
-    print("\nEscolha o vilão que deseja enfrentar:")
+    mostrar_titulo("ESCOLHA SEU OPONENTE")
     for indice, classe in enumerate(inimigos, start=1):
-        print(f"{indice} - {classe.__name__}")
+        vilao = classe()
+        print(f"{indice} - {vilao.nome} | Vida {vilao.vida} | Ataque {vilao.ataque}")
 
     opcao = input("Opção: ").strip()
     if opcao.isdigit():
@@ -57,6 +66,7 @@ def selecionar_inimigo(jogador):
 
 def main():
     personagem = (sys.argv[1] if len(sys.argv) > 1 else "").lower()
+    mostrar_abertura()
 
     if personagem == "mago":
         jogador = Mago("Merlin")

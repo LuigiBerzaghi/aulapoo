@@ -16,19 +16,19 @@ class Item:
             vida_antes = personagem.vida
             personagem.curar(self.valor)
             recuperado = personagem.vida - vida_antes
-            print(f"{personagem.nome} recuperou {recuperado} de vida.")
+            print(f"{personagem.nome} usa {self.nome} e recupera {recuperado} de vida.")
             return recuperado
 
         if self.tipo == "mana" and hasattr(personagem, "mana"):
             mana_antes = personagem.mana
             personagem.recuperar_mana(self.valor)
             restaurado = personagem.mana - mana_antes
-            print(f"{personagem.nome} recuperou {restaurado} de mana.")
+            print(f"{personagem.nome} usa {self.nome} e recupera {restaurado} de mana.")
             return restaurado
 
         if self.tipo == "flecha" and hasattr(personagem, "flechas"):
             personagem.flechas += self.valor
-            print(f"{personagem.nome} recebeu {self.valor} flechas extras.")
+            print(f"{personagem.nome} usa {self.nome} e recebe {self.valor} flechas extras.")
             return self.valor
 
         print(f"{personagem.nome} usou {self.nome}, mas não há efeito.")

@@ -33,16 +33,26 @@ class Personagem(ABC):
 
         dano_real = max(dano - self.defesa, 0)
         self.vida = max(0, self.vida - dano_real)
+        if dano_real == 0:
+            print(f"{self.nome} bloqueia o golpe e não sofre dano!")
+        else:
+            print(f"{self.nome} sofre {dano_real} de dano! (a defesa bloqueou {dano - dano_real})")
         return self.vida
 
     @abstractmethod
     def atacar(self, alvo):
         pass
 
+    def barra_vida(self, tamanho=20):
+        cheios = int(self.vida / self.vida_maxima * tamanho)
+        if self.vida > 0 and cheios == 0:
+            cheios = 1
+        return "[" + "#" * cheios + "-" * (tamanho - cheios) + "]"
+
     def mostrar_status(self):
         print(
             f"{self.nome} | "
-            f"Vida: {self.vida}/{self.vida_maxima} | "
+            f"Vida: {self.barra_vida()} {self.vida}/{self.vida_maxima} | "
             f"Ataque: {self.ataque} | "
             f"Defesa: {self.defesa}"
         )
