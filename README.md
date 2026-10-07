@@ -48,6 +48,24 @@ python src/main.py chefe
 
 Para sair, escolha a opção 4 no menu de heróis ou pressione `Ctrl + C` a qualquer momento.
 
+## Interface gráfica (pygame)
+
+O jogo também tem uma versão com janela, animações, efeitos e trilha sonora. Ela usa as mesmas classes e regras da versão de terminal.
+
+```bash
+pip install -r requirements.txt
+python src/main_pygame.py
+```
+
+Na versão gráfica:
+
+- Use as setas e o Enter, as teclas numéricas ou o mouse para escolher as opções.
+- Esc volta ao menu anterior ou pausa a batalha.
+- M liga e desliga o som. F11 alterna a tela cheia.
+- Cada vilão tem o próprio cenário. Os golpes têm animação, números de dano, tremor de tela e efeitos de partículas.
+
+Todos os gráficos e sons são gerados pelo código. O projeto não usa arquivos de imagem nem de áudio.
+
 ## Como jogar
 
 1. Escolha um herói e o vilão que deseja enfrentar.
@@ -132,11 +150,24 @@ src/
   item.py          classe Item e o efeito de cada item
   mago.py          classe Mago (mana e magia)
   main.py          abertura, menus de escolha e início do jogo
+  main_pygame.py   início da versão gráfica
   personagem.py    classe base Personagem (vida, dano e status)
+  interface/       versão gráfica em pygame
+    controlador.py   liga a interface à Batalha (não depende do pygame)
+    app.py           laço principal, transições, som e tela cheia
+    cenas_menu.py    abertura, escolha de herói e de oponente
+    cena_batalha.py  arena, animações, HUD, crônica e telas de fim
+    figuras.py       personagens desenhados por código
+    cenarios.py      cenários de cada vilão
+    efeitos.py       partículas, textos flutuantes, tremor e projéteis
+    sons.py          efeitos sonoros e trilha sintetizados
+    widgets.py       botões, barras, ícones e retratos
 
 tests/
-  test_batalha.py      testes da batalha
-  test_personagem.py   testes dos heróis, vilões e itens
+  test_batalha.py                testes da batalha
+  test_personagem.py             testes dos heróis, vilões e itens
+  test_interface_controlador.py  testes da ponte entre interface e jogo
+  test_interface_grafica.py      batalha completa na interface, sem abrir janela
 ```
 
 ## Regras de desenvolvimento
@@ -147,7 +178,7 @@ tests/
 
 ## Validação
 
-Para rodar a suíte de testes, instale o pytest (só na primeira vez) e execute:
+Para rodar a suíte de testes, instale as dependências (só na primeira vez) e execute os comandos abaixo. Sem o pygame instalado, o teste da interface gráfica é ignorado.
 
 ```bash
 pip install -r requirements.txt
